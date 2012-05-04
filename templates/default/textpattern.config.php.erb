@@ -1,0 +1,49 @@
+<?php
+
+	/**
+	 *  mysql database
+	 */
+  $txpcfg['db'] = '<%= @db_name %>';
+
+	/**
+	 *  database login name
+	 */
+  $txpcfg['user'] = '<%= @db_user %>';
+
+	/**
+	 *  database password
+	 */
+  $txpcfg['pass'] = '<%= @db_pass %>';
+
+	/**
+	 *  database host
+	 */
+  $txpcfg['host'] = '<%= @db_host %>';
+
+	/**
+	 *  table prefix (Use ONLY if you require multiple installs in one db)
+	 */
+  $txpcfg['table_prefix'] = '<%= @db_table_prefix %>';
+
+	/**
+	 *  full server path to textpattern dir (no slash at end)
+	 */
+  $txpcfg['txpath'] = <%= "'#{@txpath}'" || "dirname(__FILE__)" %>;
+
+	/**
+	 *  DB Connection Charset, only for MySQL4.1 and up. Must be equal to the Table-Charset.
+	 */
+  $txpcfg['dbcharset'] = '<%= @db_charset %>';
+
+	/**
+	 *  optional: database client flags as needed (@see http://www.php.net/manual/function.mysql-connect.php)
+	 */
+	$txpcfg['client_flags'] = '<%= @db_client_flags.join(" | ") %>';
+
+	/**
+	 *  optional, advanced: http address of the site serving images
+	 *  @see http://forum.textpattern.com/viewtopic.php?id=34493
+	 */
+  <%= "define('ihu', '#{@static_assets_host}')" if @static_assets_host %>
+
+?>
