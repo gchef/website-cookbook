@@ -1,37 +1,42 @@
-action :install do
+action :create do
   setup_website and ensure_favicon and only_allow_access_to_owner
 
   setup_mysql_database if mysql?
   setup_ftp_account if ftp?
 end
 
-action :upgrade do
-  setup_website and ensure_favicon and only_allow_access_to_owner
+action :migrate do
+  authenticate_with_remote_host
 end
 
 action :configure do
   configure_website and only_allow_access_to_owner
-  self.send(new_resource.webserver[:type])
+  configure_apache_vhost if apache?
 end
 
-action :remove do
+action :upgrade do
+  setup_website and ensure_favicon and only_allow_access_to_owner
+end
+
+action :disable do
 
 end
 
-action :migrate do
-  ssh_key_authentication
+action :delete do
+
 end
 
 def load_current_resource
+  extend SSH::Util
+
   extend Website::Common
-  extend Website::MySQL
   extend Website::FTP
-  extend Website::WebServer
-  extend Website::Migrate
+  extend Website::MySQL
+  extend Website::Apache
 
   ensure_website_directory
 
-  case new_resource.type
+  case new_resource.cms
   when :wordpress
     extend Website::WordPress
   when :textpattern
@@ -40,5 +45,5 @@ def load_current_resource
     extend Website::Plain
   end
 
-  sync_source unless new_resource.migrate_from_hostname
+  sync_source unless new_resource.remote_ssh_host
 end

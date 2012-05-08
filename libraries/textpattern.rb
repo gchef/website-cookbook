@@ -17,12 +17,12 @@ module Website
     end
 
     def setup_website
-      execute "Sync TXP v#{node[:website][:textpattern][:version]} to #{new_resource.path}" do
+      execute "Sync TXP v#{node[:website][:textpattern][:version]} to #{@@website.path}" do
         command %{
-          cd #{new_resource.path}/public
+          cd #{@@website.path}/public
           rsync --verbose --checksum --recursive #{node[:website][:src]}/#{node[:website][:textpattern][:dir]}/* .
           rm #{redundant_files}
-          chmod 777 #{new_resource.path}/images #{new_resource.path}/files
+          chmod 777 #{@@website.path}/images #{@@website.path}/files
         }
         # It would be nice if we ran the install atuomatically
         # And have the admin user configured, then removed the setup
@@ -31,7 +31,7 @@ module Website
     end
 
     def configure_website
-      template "#{new_resource.path}/public/textpattern/config.php" do
+      template "#{@@website.path}/public/textpattern/config.php" do
         cookbook "website"
         source "textpattern.config.php.erb"
         variables(

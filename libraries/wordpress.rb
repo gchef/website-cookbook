@@ -21,9 +21,9 @@ module Website
     end
 
     def setup_website
-      execute "Sync WP v#{node[:website][:wordpress][:version]} to #{new_resource.path}" do
+      execute "Sync WP v#{node[:website][:wordpress][:version]} to #{@@website.path}" do
         command %{
-          cd #{new_resource.path}/public
+          cd #{@@website.path}/public
           rsync --verbose --checksum --recursive #{node[:website][:src]}/#{node[:website][:wordpress][:dir]}/* .
           rm #{redundant_files}
         }
@@ -31,11 +31,11 @@ module Website
     end
 
     def configure_website
-      template "#{new_resource.path}/public/wp-config.php" do
+      template "#{@@website.path}/public/wp-config.php" do
         cookbook "website"
         source "wordpress.config.php.erb"
         variables(
-          :mysql => new_resource.mysql
+          :mysql => @@website.mysql
         )
         backup false
       end

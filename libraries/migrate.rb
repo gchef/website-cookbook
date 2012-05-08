@@ -1,28 +1,5 @@
 module Website
   module Migrate
-    def ssh_key_authentication
-      ssh_key "local" do
-        action :create
-      end
-
-      ssh_key new_resource.migrate_from_hostname do
-        port    new_resource.migrate_from_port
-        action  :allow
-      end
-
-      ssh_key migrate_from_ip do
-        port    new_resource.migrate_from_port
-        action  :allow
-      end
-
-      ssh_key new_resource.migrate_from_hostname do
-        port      new_resource.migrate_from_port
-        username  new_resource.migrate_from_username
-        password  new_resource.migrate_from_password
-        action    :copy
-      end
-    end
-
 #node[:system_users].each do |username, username_properties|
  #user_home = username_properties[:home] || "/home/#{username}"
  #websites = username_properties[:websites]
